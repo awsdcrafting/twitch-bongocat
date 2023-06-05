@@ -50,8 +50,9 @@ window.maxNotesPerBatch = 5;
 // ====================================================== //
 var notations = {};
 
-notations["bongo"] = parseSongBongo;
+notations["bongol"] = parseSongBongo;
 notations["legacy"] = parseSongBongo;
+notations["bongo"] = parseSongBongo;
 notations["bongo+"] = parseSongBongo;
 
 
@@ -296,9 +297,10 @@ function bongoPlus(args)
   console.log(args);
   const notes = args.arg;
   console.log(`${args.tags.username} plays+ ${notes}.`);
-  let song = {performer: args.tags.username, notes: notes, notation: "bongo+"};
+  let song = {performer: args.tags.username, notes: notes, notation: "bongo"};
   addToQueue(song);
 }
+commands["!bongo"] = bongoPlus;
 commands["!bongo+"] = bongoPlus;
 
 function bongo(args)
@@ -310,10 +312,10 @@ function bongo(args)
   //const notes = message.substr(7);
   const notes = args.arg;
   console.log(`${args.tags.username} plays ${notes}.`);
-  let song = {performer: args.tags.username, notes: notes, notation: "bongo"};
+  let song = {performer: args.tags.username, notes: notes, notation: "legacy"};
   addToQueue(song);
 }
-commands["!bongo"] = bongo;
+commands["!bongol"] = bongo;
 
 function changeBpm(args)
 {
@@ -358,6 +360,7 @@ function handleCommand(message, command, arg, tags)
     {
       if (cmd.length > longestCmd.length)
       {
+        console.log(cmd, "beat", longestCmd)
         longestCmd = cmd;
       }
     }
