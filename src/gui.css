@@ -1,0 +1,36 @@
+.rectangle {
+    border-color: #333333;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.guiContainer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: grid;
+    grid-template-rows: 2fr 450px;
+    grid-template-columns: 400px 400px 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+        "settings keys keys keys keys keys keys keys"
+        "cat cat song song song song song song";
+    width: 100%;
+    height: 100%;
+}
+
+.guiSettings {
+    grid-area: settings
+}
+
+.guiKeys  {
+    grid-area: keys;
+
+}
+
+.guiCat {
+    grid-area: cat;
+}
+
+.guiSong {
+    grid-area: song;
+}

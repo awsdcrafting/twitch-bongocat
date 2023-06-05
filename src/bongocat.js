@@ -1,4 +1,5 @@
 import {parseSong as parseSongBongo} from "./modules/bongo.js";
+import {setupBaseGui} from "./gui.js";
 
 // ====================================================== //
 // ================== type definitions ================== //
@@ -121,7 +122,7 @@ function introAnimation(song)
   }
   else
   {
-    document.getElementById("nametag").innerHTML = username + " performs " + song.title + " by " + song.author;
+    document.getElementById("nametag").innerHTML = username + " performs '" + song.title + "' by <i>" + song.author + "</i>";
   }
   document.getElementById("bongocat").style.left = "0px";
   playing = true;
@@ -248,6 +249,7 @@ async function playFromGithub(song, user)
   const response = await fetch(encodeURI(githubUrl + song));
   if (response.status != 200)
   {
+    console.log("Failed to get song!")
     return;
   }
   //console.log(response)
@@ -401,28 +403,60 @@ const channel = location.hash || params.get("channel") || 'jvpeek';
 const chatClient = new tmi.Client({
   channels: [channel]
 });
-chatClient.connect();
 
-chatClient.on('connected', (address, port) =>
+function setupTMI()
 {
-  console.log(`Connected to ${address}:${port}, channel ${channel}.`);
-});
-function isSuperUser(tags)
-{
-  return tags.mod || tags.badges?.broadcaster || tags.username == "jvpeek";
-}
-chatClient.on('message', (channel, tags, message, self) =>
-{
+  chatClient.connect();
 
-  if (message.startsWith("!"))
+  chatClient.on('connected', (address, port) =>
   {
-    let args = message.split(/\s+/);
-    let cmd = args[0];
-    args = args.splice(1);
-    let arg = args.join(" ");
-    console.log(cmd, arg);
-    handleCommand(message, cmd, arg, tags);
+    console.log(`Connected to ${address}:${port}, channel ${channel}.`);
+  });
+  function isSuperUser(tags)
+  {
+    return tags.mod || tags.badges?.broadcaster || tags.username == "jvpeek";
   }
-});
+  chatClient.on('message', (channel, tags, message, self) =>
+  {
+
+    if (message.startsWith("!"))
+    {
+      let args = message.split(/\s+/);
+      let cmd = args[0];
+      args = args.splice(1);
+      let arg = args.join(" ");
+      console.log(cmd, arg);
+      handleCommand(message, cmd, arg, tags);
+    }
+  });
+}
+
+// ====================================================== //
+// ========================= gui ======================== //
+// ====================================================== //
+var notationGuis = {}
+
+
+function setupGui(notation)
+{
+  let keyHolder = setupBaseGui(document.getElementById("gui"));
+
+}
+
+// ====================================================== //
+// ======================= startup ====================== //
+// ====================================================== //
+if (params.get("gui"))
+{
+  console.log("Started gui mode!");
+  //use bongo as default notation
+  setupGui("bongo");
+  if (location.hash || params.get("channel")) {
+    setupTMI()
+  }
+} else
+{
+  setupTMI();
+}
 
 startQueue();
