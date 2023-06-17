@@ -238,6 +238,7 @@ function checkQueue()
     //addNotes(noteString, isLegacyNotation, username);
   }
 }
+var queueManagement = {addToQueue, getFromQueue, startQueue, checkQueue}
 
 
 // ====================================================== //
@@ -259,7 +260,7 @@ async function playFromGithub(song, user)
   addToQueue(jsonData);
 }
 
-
+var remotePlay = {playFromGithub}
 
 // ====================================================== //
 // ====================== commands ====================== //
@@ -374,6 +375,7 @@ function handleCommand(message, command, arg, tags)
   */
 }
 
+var commandHandling = {handleCommand}
 
 // ====================================================== //
 // ======================= config ======================= //
@@ -394,6 +396,13 @@ let minPbmParam = params.get("minBpm");
 if (minPbmParam && Number(minPbmParam))
 {
   minBpm = Number(minPbmParam);
+}
+
+let testing = params.get("testing")
+if (testing) {
+  window.queueManagement = queueManagement
+  window.remotePlay = remotePlay
+  window.commandHandling = commandHandling
 }
 
 // ====================================================== //
