@@ -259,7 +259,7 @@ var queueManagement = {addToQueue, getFromQueue, startQueue, checkQueue}
 async function playFromGithub(song, user)
 {
   const userRegex = /@\w+/g;
-  let dedications = song.match(userRegex).map(s => s.replace("@", ""))
+  let dedications = song.match(userRegex)?.map(s => s.replace("@", ""))
   song = song.replace(userRegex, "") //remove usernames from string
   song = song.trim().replace(/\s+/, "_") //remove whitespaces
 
